@@ -16,14 +16,42 @@ Test data at:
 for this analysis we assume the data is downloaded and in the same directory.
 
 
-
-
 ```{r}
-local_data <- read.csv('pml-testing.csv')
+library(caret)
+local_data_training <- read.csv('pml-training.csv')
+local_data_testing <- read.csv('pml-testing.csv')
+```
+
+Set up a split on t
+```{r}
+set.seed(12345)
+ts_in <- createDataPartition(y=local_data_training$classe, p=0.7, list=F)
+ts_in1 <- local_data_training[ts_in, ]
+ts_in2 <- local_data_training[-ts_in, ]
 
 ```
 
-You can also embed plots, for example:
+Clean up data
+```{r}
+# nzv (nearly zero)
+nzv <- nearZeroVar(ts_in1)
+ptrain1 <- ptrain1[, -nzv]
+ptrain2 <- ptrain2[, -nzv]
+
+# remove variables that are NA
+mostlyNA <- sapply(ptrain1, function(x) mean(is.na(x))) > 0.95
+ptrain1 <- ptrain1[, mostlyNA==F]
+ptrain2 <- ptrain2[, mostlyNA==F]
+
+# remove variables tthe first five variables (not needed for prediction)
+ptrain1 <- ptrain1[, -(1:5)]
+ptrain2 <- ptrain2[, -(1:5)]
+```
+
+
+
+
+
 
 ```{r, echo=FALSE}
 plot(cars)
