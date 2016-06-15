@@ -59,7 +59,8 @@ fit <- train(classe ~ ., data=ts_in1, method="rf", trControl=x_control)
 print (fit$finalModel)
 ```
 
-Get predicition and show confusion matrix
+Get prediction and show confusion matrix
+I expect the error to be low, as Random Forest has a high accuracy (but takes a long time to run)
 ```{r}
 # use model to predict classe in validation set (ts_in2)
 preds <- predict(fit, newdata=ts_in2)
@@ -69,7 +70,6 @@ confusionMatrix(ts_in2$classe, preds)
 
 ```
 From the above, the accuracy is over 99% -- so this is good enough.
-
 
 Predict on Test Set
 
