@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jerry Dumblauskas" />
 
-<meta name="date" content="2016-06-14" />
+<meta name="date" content="2016-06-15" />
 
 <title>Analysis</title>
 
@@ -118,15 +118,15 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Analysis</h1>
 <h4 class="author"><em>Jerry Dumblauskas</em></h4>
-<h4 class="date"><em>June 14, 2016</em></h4>
+<h4 class="date"><em>June 15, 2016</em></h4>
 
 </div>
 
 
 <p>From the coursera website:</p>
 <p>“Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: <a href="http://groupware.les.inf.puc-rio.br/har" class="uri">http://groupware.les.inf.puc-rio.br/har</a> (see the section on the Weight Lifting Exercise Dataset).”</p>
-<p>Training data at: Test data at:</p>
-<p>for this analysis we assume the data is downloaded and in the same directory.</p>
+<p>Training data at: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv" class="uri">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a> Test data at: <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv" class="uri">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></p>
+<p>For this analysis we assume the data is downloaded and in the same directory.</p>
 <pre class="r"><code>library(caret)</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
@@ -181,11 +181,11 @@ fit &lt;- train(classe ~ ., data=ts_in1, method=&quot;rf&quot;, trControl=x_cont
 ## C    0    5 2390    1    0 0.0025041736
 ## D    0    0    5 2247    0 0.0022202487
 ## E    0    1    0    4 2520 0.0019801980</code></pre>
-<p>Get predicition and show confusion matrix</p>
+<p>Get prediction and show confusion matrix I expect the error to be low, as Random Forest has a high accuracy (but takes a long time to run)</p>
 <pre class="r"><code># use model to predict classe in validation set (ts_in2)
 preds &lt;- predict(fit, newdata=ts_in2)
 
-# show confusion matrix to get estimate of out-of-sample error
+# show confusion matrix and get accuracy
 confusionMatrix(ts_in2$classe, preds)</code></pre>
 <pre><code>## Confusion Matrix and Statistics
 ## 
@@ -218,7 +218,7 @@ confusionMatrix(ts_in2$classe, preds)</code></pre>
 ## Detection Rate         0.2845   0.1925   0.1738   0.1628   0.1832
 ## Detection Prevalence   0.2845   0.1935   0.1743   0.1638   0.1839
 ## Balanced Accuracy      0.9985   0.9980   0.9963   0.9973   0.9996</code></pre>
-<p>From the above, the accuracy is over 99% – so this is good enough</p>
+<p>From the above, the accuracy is over 99% – so this is good enough.</p>
 <p>Predict on Test Set</p>
 <pre class="r"><code># predict on test set
 preds &lt;- predict(fit, newdata=local_data_testing)
@@ -226,6 +226,10 @@ preds &lt;- predict(fit, newdata=local_data_testing)
 print (preds)</code></pre>
 <pre><code>##  [1] B A B A A E D B A A B C B A E E A B B B
 ## Levels: A B C D E</code></pre>
+<div id="conclusion" class="section level1">
+<h1>Conclusion:</h1>
+<p>Random forest works well. Low error and high accuracy. The only drawback is runtime.</p>
+</div>
 
 
 
